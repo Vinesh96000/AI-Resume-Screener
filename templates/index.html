@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Screener Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🚀 AI Resume <span class="highlight">Screener</span></h1>
+            <p>Next-Gen Candidate Ranking System powered by SBERT & Deep Learning</p>
+        </header>
+
+        <div class="glass-panel">
+            <form action="/analyze" method="post" enctype="multipart/form-data">
+                
+                <div class="input-group">
+                    <label for="job_description">1. Paste Job Description</label>
+                    <textarea 
+                        name="job_description" 
+                        id="job_description" 
+                        placeholder="Paste the job description here... (e.g., We are looking for a Python Developer with AI experience...)" 
+                        required
+                    >{{ job_description if job_description else '' }}</textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="files">2. Upload Resumes (PDF Only)</label>
+                    <div class="file-drop-area">
+                        <span class="file-msg">Drag & Drop PDFs here or Click to Upload</span>
+                        <input class="file-input" type="file" name="files" id="files" multiple accept=".pdf" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="cta-button">Analyze Candidates ⚡</button>
+            </form>
+        </div>
+
+        {% if results %}
+        <div class="results-section">
+            <h2>🏆 Analysis Report</h2>
+            <div class="leaderboard">
+                {% for res in results %}
+                <div class="card">
+                    
+                    <div class="card-left">
+                        <div class="rank">#{{ loop.index }}</div>
+                        <div class="info">
+                            <h3>{{ res.filename }}</h3>
+                            <p class="strength-badge">{{ res.feedback.strength }}</p>
+                        </div>
+                    </div>
+
+                    <div class="report-content">
+                        <p class="summary-text">{{ res.feedback.summary }}</p>
+                        {% if res.feedback.missing_keywords %}
+                        <div class="missing-skills">
+                            <span>Missing Keywords:</span>
+                            {% for word in res.feedback.missing_keywords %}
+                                <span class="tag">{{ word }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="score-box">
+                        <div class="score-circle 
+                            {% if res.score >= 80 %} score-green 
+                            {% elif res.score >= 60 %} score-orange 
+                            {% else %} score-red {% endif %}">
+                            <span>{{ res.score }}%</span>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script>
+        const fileInput = document.querySelector('.file-input');
+        const dropArea = document.querySelector('.file-drop-area');
+
+        fileInput.addEventListener('change', () => {
+            const filesCount = fileInput.files.length;
+            const textContainer = document.querySelector('.file-msg');
+            if(filesCount > 0) {
+                textContainer.textContent = `${filesCount} Files Selected`;
+                dropArea.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

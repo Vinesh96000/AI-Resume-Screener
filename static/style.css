@@ -1,0 +1,341 @@
+/* GLOBAL RESET & FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc; /* Professional Light Grey */
+    color: #334155; /* Dark Slate Text */
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 60px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px; /* Increased width to give text more room */
+}
+
+/* HEADER SECTION */
+header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.highlight {
+    color: #2563eb; /* Royal Blue */
+}
+
+header p {
+    color: #64748b;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* MAIN FORM PANEL */
+.glass-panel {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+    padding: 40px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 40px;
+}
+
+/* INPUTS */
+.input-group {
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+textarea {
+    width: 100%;
+    height: 140px;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #334155;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    resize: vertical;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* FILE UPLOAD */
+.file-drop-area {
+    width: 100%;
+    padding: 40px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.file-drop-area:hover, .file-drop-area.active {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+}
+
+.file-msg {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* BUTTON */
+.cta-button {
+    width: 100%;
+    padding: 18px;
+    background-color: #2563eb;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.cta-button:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+/* RESULTS SECTION CONTAINER - SCROLLABLE FOR BULK UPLOADS */
+.results-section {
+    margin-top: 40px;
+}
+
+.results-section h2 {
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.leaderboard {
+    max-height: 600px; /* Limits height so page doesn't go on forever */
+    overflow-y: auto;  /* Adds a scrollbar if you upload 100 resumes */
+    padding-right: 10px; /* Space for scrollbar */
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    padding: 20px;
+}
+
+/* CUSTOM SCROLLBAR */
+.leaderboard::-webkit-scrollbar {
+    width: 8px;
+}
+.leaderboard::-webkit-scrollbar-track {
+    background: #f1f5f9; 
+}
+.leaderboard::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 4px;
+}
+.leaderboard::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+
+/* CARD LAYOUT - FIXED ALIGNMENT */
+.card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Vertically align items */
+    justify-content: space-between;
+    gap: 30px; /* Increased gap to prevent overlapping */
+    margin-bottom: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+}
+
+.card:hover {
+    transform: scale(1.005);
+    border-color: #2563eb;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section - FIXED WIDTH TO STOP OVERLAP */
+.card-left {
+    display: flex;
+    flex-direction: column; /* Stack name under rank if needed, or keep row */
+    justify-content: center;
+    min-width: 200px;  /* STRICT WIDTH CONSTRAINT */
+    max-width: 200px;
+    border-right: 1px solid #f1f5f9; /* Visual separator */
+    padding-right: 15px;
+}
+
+.rank {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 5px;
+}
+
+.info h3 {
+    font-size: 1rem;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds "..." if name is too long */
+}
+
+.strength-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Middle Section - FLEX GROW TO FILL SPACE */
+.report-content {
+    flex-grow: 1;
+    padding-left: 0; /* Removed border, using whitespace for separation */
+}
+
+.summary-text {
+    font-size: 0.95rem;
+    color: #334155;
+    margin-bottom: 10px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.missing-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.missing-skills span:first-child {
+    font-size: 0.8rem;
+    color: #ef4444;
+    font-weight: 700;
+    margin-right: 5px;
+}
+
+.tag {
+    font-size: 0.75rem;
+    background: #fef2f2;
+    color: #ef4444;
+    padding: 3px 10px;
+    border-radius: 20px; /* Pill shape */
+    border: 1px solid #fecaca;
+    font-weight: 500;
+}
+
+/* Right Section - CLEAN MINIMALIST SCORE */
+.score-box {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    background: white;
+    /* REMOVED COLORED BORDER */
+    border: 1px solid #e2e8f0; /* Very subtle grey border just for definition */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* TEXT COLOR ONLY (Clean Look) */
+.score-circle.score-green {
+    color: #16a34a; /* Green Text */
+}
+
+.score-circle.score-orange {
+    color: #ea580c; /* Orange Text */
+}
+
+.score-circle.score-red {
+    color: #dc2626; /* Red Text */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .card-left {
+        min-width: 100%;
+        max-width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 15px;
+    }
+    .score-box {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+}
