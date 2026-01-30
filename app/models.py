@@ -4,8 +4,9 @@ import time
 
 class ResumeMatcher:
     def __init__(self):
-        # The API URL for the SBERT model
-        self.api_url = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
+        # UPDATED URL: HuggingFace changed their endpoint to 'router.huggingface.co'
+        self.api_url = "https://router.huggingface.co/hf-inference/models/sentence-transformers/all-MiniLM-L6-v2"
+        
         # Get token from environment
         token = os.getenv('HF_TOKEN')
         self.headers = {"Authorization": f"Bearer {token}"}
@@ -24,7 +25,6 @@ class ResumeMatcher:
         }
         
         # RETRY LOGIC: The free API takes time to "wake up" (Cold Start)
-        # We try 5 times, waiting 5 seconds each time (Total 25s wait)
         for attempt in range(1, 6):
             try:
                 response = requests.post(self.api_url, headers=self.headers, json=payload)
@@ -37,7 +37,7 @@ class ResumeMatcher:
                 
                 # Check 2: Is the model still loading?
                 if isinstance(data, dict) and "error" in data:
-                    print(f"⚠️ Attempt {attempt}: Model is loading... ({data['error']})")
+                    print(f"⚠️ Attempt {attempt}: Model is loading... ({data.get('error')})")
                     time.sleep(5) # Wait 5 seconds and try again
                     continue
                     
