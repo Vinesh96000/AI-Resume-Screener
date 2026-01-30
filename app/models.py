@@ -1,26 +1,46 @@
-from sentence_transformers import SentenceTransformer, util
-import torch
+import os
+import requests
+import time
 
 class ResumeMatcher:
     def __init__(self):
-        print("Loading AI Model... (This might take a moment)")
-        # Loading the SBERT model for semantic understanding
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
-        print("AI Model Loaded Successfully!")
+        # We use the API URL for the exact same model we were using locally
+        self.api_url = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
+        # We will get the token from Environment Variables
+        self.headers = {"Authorization": f"Bearer {os.getenv('HF_TOKEN')}"}
+        print("AI Model: Connected to HuggingFace Cloud Inference.")
 
     def calculate_score(self, job_description: str, resume_text: str):
         """
         Input: Job Description text, Resume text
-        Output: A match score between 0 and 100
+        Output: A match score between 0 and 100 using Cloud API
         """
-        # 1. Convert text to Vector Embeddings
-        embeddings1 = self.model.encode(job_description, convert_to_tensor=True)
-        embeddings2 = self.model.encode(resume_text, convert_to_tensor=True)
-
-        # 2. Compute Cosine Similarity
-        cosine_score = util.cos_sim(embeddings1, embeddings2)
-
-        # 3. Convert to a percentage
-        match_percentage = round(float(cosine_score[0][0]) * 100, 2)
+        payload = {
+            "inputs": {
+                "source_sentence": job_description,
+                "sentences": [resume_text]
+            }
+        }
         
-        return match_percentage
+        # Retry logic in case the model is "warming up" (common on free tier)
+        for attempt in range(3):
+            try:
+                response = requests.post(self.api_url, headers=self.headers, json=payload)
+                data = response.json()
+                
+                # Handling "Model Loading" error from HF
+                if isinstance(data, dict) and "error" in data:
+                    print(f"API Waiting... {data}")
+                    time.sleep(2) # Wait for model to load
+                    continue
+                
+                # HF returns a list of scores, e.g., [0.85]
+                if isinstance(data, list):
+                    match_percentage = round(float(data[0]) * 100, 2)
+                    return match_percentage
+                    
+            except Exception as e:
+                print(f"API Error: {e}")
+                return 0
+                
+        return 0
